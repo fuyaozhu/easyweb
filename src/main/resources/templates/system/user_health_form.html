@@ -1,0 +1,164 @@
+<!-- user表单弹窗 -->
+<form id="user-health-form" lay-filter="user-health-form" class="layui-form model-form">
+    <input name="id" type="hidden"/>
+    <div class="layui-form-item">
+        <label class="layui-form-label">姓名</label>
+        <div class="layui-input-block">
+            <input name="name" placeholder="请输入姓名" type="text" class="layui-input" maxlength="20"
+                   lay-verify="required" required/>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">性别</label>
+        <div class="layui-input-block">
+            <input type="radio" name="sex" value="男" title="男" checked/>
+            <input type="radio" name="sex" value="女" title="女"/>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">出生年月</label>
+        <div class="layui-input-block">
+            <input name="birthDate" placeholder="请输入出生年月" type="text" class="layui-input"
+                   required/>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">体检日期</label>
+        <div class="layui-input-block">
+            <input name="physicalExaminationDate" placeholder="请输入体检日期" type="text" class="layui-input"
+                   required/>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">培训日期</label>
+        <div class="layui-input-block">
+            <input name="trainDate" placeholder="请输入培训日期" type="text" class="layui-input" 
+                   required/>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">报告日期</label>
+        <div class="layui-input-block">
+            <input name="reportDate" placeholder="请输入报告日期" type="text" class="layui-input"
+                   required/>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">医疗机构</label>
+        <div class="layui-input-block">
+            <input name="medicalInstitution" placeholder="请输入医疗机构" type="text" class="layui-input"
+                   required/>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">身份证号</label>
+        <div class="layui-input-block">
+            <input name="idNumber" placeholder="请输入身份证号" type="text" class="layui-input"
+                   required/>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">证卡号码</label>
+        <div class="layui-input-block">
+            <input name="cardNumber" placeholder="请输入证卡号码" type="text" class="layui-input"
+                   required/>
+        </div>
+    </div>
+
+    <div class="layui-form-item magt3">
+        <label class="layui-form-label" style="float: left">项目图片</label>
+        <div class="layui-upload">
+            <button type="button" class="layui-btn" id="test1">上传图片</button>
+            <div class="layui-upload-list">
+                <img class="layui-upload-img" id="demo1" name="image">
+                <p id="demoText"></p>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="layui-form-item model-form-footer">
+        <button class="layui-btn layui-btn-primary" type="button" ew-event="closeDialog">取消</button>
+        <button class="layui-btn" lay-filter="user-health-form-submit" lay-submit>保存</button>
+    </div>
+</form>
+
+<script>
+    layui.use(['layer', 'admin', 'form', 'formSelects','upload'], function (data) {
+        var layer = layui.layer;
+        var admin = layui.admin;
+        var form = layui.form;
+        var formSelects = layui.formSelects;
+        var upload = layui.upload;
+
+        var img="";
+         //普通图片上传
+    var uploadInst = upload.render({
+        elem: '#test1'
+        , url: '/file/projectPictureUpload'
+        ,method:'post'
+        ,accept:'images'
+        ,acceptMime:'image/*'
+        ,field:'projectImg'
+        ,choose: function (obj) {
+
+        }
+        ,done: function (res) {
+            //如果上传失败
+            if (res.code == 250) {
+                return layer.msg('上传项目图片失败',{icon: 5});
+            }
+            //上传成功,获得图片地址
+            console.log(res.data);
+            console.log(res.msg);
+            console.log(res);
+            $('#demo1').attr('src', res.msg);
+            img=res.msg;
+        }
+        ,error: function () {
+            //演示失败状态，并实现重传
+            var demoText = $('#demoText');
+            demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+            demoText.find('.demo-reload').on('click', function () {
+                uploadInst.upload();
+            });
+        }
+    });
+
+
+
+
+        form.render('radio');
+
+        var url = 'system/user_health/add';
+        // 回显user_health数据
+        var user_health = admin.getTempData('t_user_health');
+        console.log(user_health);
+        if (user_health) {
+            url = 'system/user_health/update';
+            form.val('user-health-form', user_health);
+            $('#demo1').attr('src', user_health.image);
+            var rds = new Array();
+            img=user_health.image;
+        }
+
+        // 表单提交事件
+        form.on('submit(user-health-form-submit)', function (data) {
+        data.field.image=img;
+        console.log(data.field);
+            layer.load(data);
+            $.post(url, data.field, function (data) {
+                layer.closeAll('loading');
+                if (data.code == 200) {
+                    layer.msg(data.msg, {icon: 1});
+                    admin.finishPopupCenter();
+                } else {
+                    layer.msg(data.msg, {icon: 2});
+                }
+            });
+            return false;
+        });
+    });
+</script>

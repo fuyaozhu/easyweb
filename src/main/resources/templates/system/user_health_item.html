@@ -1,0 +1,117 @@
+<div class="layui-card">
+    <div class="layui-card-header">
+        <h2 class="header-title">健康信息管理</h2>
+        <span class="layui-breadcrumb pull-right">
+          <a href="#!home_console">首页</a>
+          <a><cite>健康信息管理</cite></a>
+        </span>
+    </div>
+    <div class="layui-card-body">
+        <div class="layui-form toolbar">
+            <button id="user-health-item-btn-add" class="layui-btn icon-btn" lay-tips=""><i
+                    class="layui-icon">&#xe654;</i>添加
+            </button>
+        </div>
+
+        <table class="layui-table" id="user-health-item-table" lay-filter="user-health-item-table"></table>
+    </div>
+</div>
+
+
+<!-- 表格操作列 -->
+<script type="text/html" id="user-health-item-table-bar">
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="health_item_edit">修改</a>
+</script>
+
+<script>
+
+layui.use(['layer', 'admin', 'form', 'formSelects','table'], function () {
+    var layer = layui.layer;
+    var admin = layui.admin;
+    var table = layui.table;
+    var form = layui.form;
+    var formSelects = layui.formSelects;
+    var data;
+    form.render('radio');
+
+    var id = JSON.parse(sessionStorage.getItem('id'));
+    // 处理获取到的数据
+    console.log('id:'+id);
+
+    // 渲染表格
+    table.render({
+        elem: '#user-health-item-table',
+        method: 'get',
+        url: 'system/user_health_item/list',
+        where:{
+            "searchKey":'user_health_id',
+            "searchValue":id
+        },
+        page: true,
+        cols: [[
+            {type: 'numbers'},
+            {field: 'diseaseName', sort: true, title: '疾病名称'},
+            {field: 'have', sort: true, title: '有无疾病'},
+            {field: 'remark', sort: true, title: '备注'},
+            {field: 'chiefPhysician', sort: true, title: '医师签章'},
+            {field: 'inspectionDate', sort: true, title: '检查日期'},
+            {align: 'center', toolbar: '#user-health-item-table-bar', title: '操作'}
+        ]]
+
+    });
+
+
+    var url = 'system/user_health_item/add';
+    // 回显user数据
+    var user_health = admin.getTempData('t_user_health_item');
+    if (user_health) {
+        url = 'system/user_health/update';
+        form.val('user-health-item-form', user_health);
+        var rds = new Array();
+    }
+
+    // 表单提交事件
+    form.on('submit(user-health-form-submit)', function (data) {
+        layer.load(2);
+        $.post(url, data.field, function (data) {
+            layer.closeAll('loading');
+            if (data.code == 200) {
+                layer.msg(data.msg, {icon: 1});
+                admin.finishPopupCenter();
+            } else {
+                layer.msg(data.msg, {icon: 2});
+            }
+        });
+        return false;
+    });
+
+        // 添加按钮点击事件
+        $('#user-health-item-btn-add').click(function () {
+            showHealthModel();
+        });
+
+        // 工具条点击事件
+        table.on('tool(user-health-item-table)', function (obj) {
+            var data = obj.data;
+            var layEvent = obj.event;
+
+            if (layEvent === 'health_item_edit') { // 修改
+                showHealthModel(data);
+            }
+        });
+
+        // 显示表单弹窗
+        var showHealthModel = function (data) {
+            var title = data ? '添加疾病信息' : '修改疾病信息';
+            admin.putTempData('t_user_health_item', data);
+            admin.popupCenter({
+                title: title,
+                path: 'system/user_health_item/editForm',
+                finish: function () {
+                    table.reload('user-health-item-table', {});
+                }
+            });
+        };
+
+});
+</script>

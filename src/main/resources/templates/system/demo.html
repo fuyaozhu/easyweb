@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Layui Table Toolbar Example</title>
+    <link rel="stylesheet" href="path/to/layui/css/layui.css">
+</head>
+<body>
+
+<table id="test-table" lay-filter="test-table"></table>
+
+<script src="path/to/layui/layui.js"></script>
+<script>
+    layui.use(['table', 'layer'], function(){
+      var table = layui.table;
+      var layer = layui.layer;
+
+      table.render({
+        elem: '#test-table',
+        cols: [[
+          {type: 'numbers', title: '序号'},
+          {field: 'id', title: 'ID'},
+          {field: 'name', title: '姓名'},
+          {title: '操作', toolbar: '#test-table-toolbar'}
+        ]],
+        data: [
+          {id: 1, name: '张三'},
+          {id: 2, name: '李四'},
+          // ... 更多数据
+        ],
+        toolbar: '#test-table-toolbar'
+      });
+
+      // 定义工具栏事件
+      table.on('tool(test-table)', function(obj){ //注：tool 是工具条事件名，test-table 是 table 的 lay-filter="*" 的值
+        var data = obj.data; // 获得当前行数据
+        var layEvent = obj.event; // 获得 lay-event 对应的值（也就是对应的操作）
+
+        if(layEvent === 'detail'){
+          // 在这里执行页面跳转并传递参数的操作
+          layer.msg('查看详情，并传递参数：' + data.id);
+          // 例如页面跳转
+          // location.href = 'your_page.html?id=' + data.id;
+        }
+      });
+    });
+</script>
+
+<script type="text/html" id="test-table-toolbar">
+    <a class="layui-btn layui-btn-xs" lay-event="detail">查看</a>
+</script>
+
+</body>
+</html>
