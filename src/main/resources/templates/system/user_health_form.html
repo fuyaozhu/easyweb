@@ -18,28 +18,28 @@
     <div class="layui-form-item">
         <label class="layui-form-label">出生年月</label>
         <div class="layui-input-block">
-            <input name="birthDate" placeholder="请输入出生年月" type="text" class="layui-input"
+            <input  name="birthDate" placeholder="请选择出生年月" type="text" class="layui-input-date"
                    required/>
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">体检日期</label>
         <div class="layui-input-block">
-            <input name="physicalExaminationDate" placeholder="请输入体检日期" type="text" class="layui-input"
+            <input  name="physicalExaminationDate" placeholder="请输入体检日期" type="text" class="layui-input-date"
                    required/>
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">培训日期</label>
         <div class="layui-input-block">
-            <input name="trainDate" placeholder="请输入培训日期" type="text" class="layui-input" 
+            <input  name="trainDate" placeholder="请输入培训日期" type="text" class="layui-input-date"
                    required/>
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">报告日期</label>
         <div class="layui-input-block">
-            <input name="reportDate" placeholder="请输入报告日期" type="text" class="layui-input"
+            <input  name="reportDate" placeholder="请输入报告日期" type="text" class="layui-input-date"
                    required/>
         </div>
     </div>
@@ -86,12 +86,21 @@
 </form>
 
 <script>
-    layui.use(['layer', 'admin', 'form', 'formSelects','upload'], function (data) {
+    layui.use(['layer', 'admin', 'form', 'formSelects','upload','laydate'], function (data) {
         var layer = layui.layer;
         var admin = layui.admin;
         var form = layui.form;
-        var formSelects = layui.formSelects;
         var upload = layui.upload;
+        var laydate = layui.laydate
+
+        //日期插件
+        $(".layui-input-date").each(function(){
+            laydate.render({
+                elem: this, //指定元素  表示当前的元素
+                type: 'date', //date日期  time时间  year年  month月份
+                theme: '#009688'  //主题  颜色改变
+            });
+        })
 
         var img="";
          //普通图片上传

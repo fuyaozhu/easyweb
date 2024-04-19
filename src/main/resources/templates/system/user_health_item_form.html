@@ -49,7 +49,7 @@
     <div class="layui-form-item">
         <label class="layui-form-label">检查日期</label>
         <div class="layui-input-block">
-            <input name="inspectionDate" placeholder="请输入检查日期" type="text" class="layui-input"
+            <input id="inspectionDate" name="inspectionDate" placeholder="请输入检查日期" type="text" class="layui-input"
                    required/>
         </div>
     </div>
@@ -66,13 +66,22 @@
 
     };
 
-    layui.use(['layer', 'admin', 'form', 'formSelects', 'jquery'], function () {
+    layui.use(['layer', 'admin', 'form', 'formSelects', 'jquery','laydate'], function () {
         var layer = layui.layer;
         var admin = layui.admin;
         var form = layui.form;
         var formSelects = layui.formSelects,
         $ = layui.jquery;
+        var laydate = layui.laydate
 
+
+         // 时间范围
+        laydate.render({
+            elem: '#inspectionDate',
+            type: 'date',
+            range: false,
+/*            theme: 'molv'*/
+        });
 
         form.render('radio');
 

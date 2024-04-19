@@ -5,15 +5,10 @@ import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.wf.ew.common.PageResult;
 import com.wf.ew.common.exception.BusinessException;
-import com.wf.ew.common.utils.CamelCaseUtil;
 import com.wf.ew.common.utils.StringUtil;
 import com.wf.ew.system.dao.UserHealthItemMapper;
-import com.wf.ew.system.dao.UserHealthMapper;
-import com.wf.ew.system.model.Role;
-import com.wf.ew.system.model.UserHealth;
 import com.wf.ew.system.model.UserHealthItem;
 import com.wf.ew.system.service.UserHealthItemService;
-import com.wf.ew.system.service.UserHealthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,8 +43,8 @@ public class UserHealthItemServiceImpl implements UserHealthItemService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean add(UserHealthItem user) {
-        if (userHealthMapper.getByDiseaseName(user.getDiseaseName()) != null) {
-            throw new BusinessException("疾病名称已经存在");
+        if (userHealthMapper.getByDiseaseNameAndUserHealthId(user.getDiseaseName(),user.getUserHealthId()) != null) {
+            throw new BusinessException("当前疾病名称此人员已经存在,请勿重复操作");
         }
         user.setCreateTime(new Date());
         user.setUpdateTime(new Date());
