@@ -23,6 +23,7 @@
     <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="health_item_edit">修改</a>
 </script>
 
+
 <script>
 
 layui.use(['layer', 'admin', 'form', 'formSelects','table'], function () {
@@ -30,8 +31,6 @@ layui.use(['layer', 'admin', 'form', 'formSelects','table'], function () {
     var admin = layui.admin;
     var table = layui.table;
     var form = layui.form;
-    var formSelects = layui.formSelects;
-    var data;
     form.render('radio');
 
     var id = JSON.parse(sessionStorage.getItem('id'));
@@ -50,11 +49,42 @@ layui.use(['layer', 'admin', 'form', 'formSelects','table'], function () {
         page: true,
         cols: [[
             {type: 'numbers'},
-            {field: 'diseaseName', sort: true, title: '疾病名称'},
+            {field: 'diseaseName', sort: true, title: '疾病名称',templet:function(data){
+                if(data.diseaseName=='bacterial_dysentery'){
+                    return '细菌性痢疾';
+                }else if(data.diseaseName=='typhoon_and_paratyphoid_fever'){
+                    return '伤寒和副伤寒';
+                }
+                else if(data.diseaseName=='viral_hepatitis'){
+                    return '病毒性肝炎';
+                }
+                else if(data.diseaseName=='active_pulmonary_tuberculosis'){
+                    return '活动性肺结核';
+                }
+                else if(data.diseaseName=='purulent_or_exudative_skin_diseases'){
+                    return '化脓性或渗出性皮肤病';
+                }
+                else if(data.diseaseName=='fungal_infectious_diseases_of_hand'){
+                    return '手部真菌感染性疾病';
+                }else if(data.diseaseName=='cholera'){
+                    return '霍乱';
+                }else if(data.diseaseName=='amoebic_dysentery'){
+                    return '阿米巴性痢疾';
+                }else if(data.diseaseName=='hand_eczema'){
+                    return '手部湿疹';
+                }else if(data.diseaseName=='psoriasis_or_scales_on_the_hands'){
+                    return '手部的银屑病或者鳞屑';
+                }else{
+                    return '--';
+                }
+
+            }},
             {field: 'have', sort: true, title: '有无疾病'},
             {field: 'remark', sort: true, title: '备注'},
             {field: 'chiefPhysician', sort: true, title: '医师签章'},
             {field: 'inspectionDate', sort: true, title: '检查日期'},
+            {field: 'inspectionResults', sort: true, title: '检查结果'},
+            {field: 'whetherToCheck', sort: true, title: '是否已检查'},
             {align: 'center', toolbar: '#user-health-item-table-bar', title: '操作'}
         ]]
 
@@ -103,6 +133,8 @@ layui.use(['layer', 'admin', 'form', 'formSelects','table'], function () {
         // 显示表单弹窗
         var showHealthModel = function (data) {
             var title = data ? '添加疾病信息' : '修改疾病信息';
+            console.log("11");
+            console.log(data);
             admin.putTempData('t_user_health_item', data);
             admin.popupCenter({
                 title: title,

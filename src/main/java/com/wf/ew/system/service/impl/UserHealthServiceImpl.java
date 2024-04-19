@@ -5,20 +5,15 @@ import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.wf.ew.common.PageResult;
 import com.wf.ew.common.exception.BusinessException;
-import com.wf.ew.common.shiro.EndecryptUtil;
 import com.wf.ew.common.utils.CamelCaseUtil;
 import com.wf.ew.common.utils.StringUtil;
 import com.wf.ew.system.dao.UserHealthMapper;
-import com.wf.ew.system.model.Role;
-import com.wf.ew.system.model.User;
 import com.wf.ew.system.model.UserHealth;
-import com.wf.ew.system.model.UserRole;
 import com.wf.ew.system.service.UserHealthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -42,7 +37,7 @@ public class UserHealthServiceImpl implements UserHealthService {
             }
         }
         Page<UserHealth> userPage = new Page<>(pageNum, pageSize);
-        List<UserHealth> userList = userHealthMapper.selectPage(userPage, wrapper.orderBy("create_time", true));
+            List<UserHealth> userList = userHealthMapper.selectPage(userPage, wrapper.orderBy("create_time", true));
         if (userList != null && userList.size() > 0) {
 
         }

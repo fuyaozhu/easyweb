@@ -46,11 +46,13 @@
 </form>
 
 <script>
-    layui.use(['layer', 'admin', 'form', 'formSelects'], function () {
+    layui.use(['layer', 'admin', 'form', 'formSelects', 'jquery'], function () {
         var layer = layui.layer;
         var admin = layui.admin;
         var form = layui.form;
         var formSelects = layui.formSelects;
+
+        $ = layui.jquery;
 
         form.render('radio');
 

@@ -1,18 +1,16 @@
-package com.wf.ew.system.model;
+package com.wf.ew.common.vo;
 
 
 import com.baomidou.mybatisplus.annotations.TableId;
-import com.baomidou.mybatisplus.annotations.TableName;
 import lombok.Data;
 
 import java.util.Date;
 
 /**
- * 用户疾病明细表
+ * 疾病明细vo
  */
-@TableName("user_health_item")
 @Data
-public class UserHealthItem {
+public class UserHealthItemVO {
 
     @TableId
     private Long Id;  // 主键id
@@ -32,12 +30,6 @@ public class UserHealthItem {
     private String remark;  // 备注
 
     private String inspectionDate  ;  // 检查日期
-
-    private String inspectionResults; //检查结果
-
-    private String whetherToCheck; //是否已检查
-
-
 
 
 }

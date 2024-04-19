@@ -40,14 +40,12 @@
 </script>
 
 <script>
-    layui.use(['form', 'table', 'util', 'admin', 'element'], function () {
+    layui.use(['form', 'table', 'util', 'admin', 'element'], function (data) {
         var form = layui.form;
         var table = layui.table;
         var layer = layui.layer;
         var util = layui.util;
         var admin = layui.admin;
-        var element = layui.element;
-
         form.render('select');
 
         // 渲染表格
@@ -103,6 +101,7 @@
 
         // 显示表单弹窗
         var showEditModel = function (data) {
+            console.log(data);
             var title = data ? '修改用户' : '添加用户';
             admin.putTempData('t_user', data);
             admin.popupCenter({

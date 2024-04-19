@@ -4,8 +4,9 @@ package com.wf.ew.system.controller;
 import com.alibaba.fastjson.JSON;
 import com.wf.ew.common.JsonResult;
 import com.wf.ew.common.PageResult;
+import com.wf.ew.common.constants.DiseaseNameEnum;
 import com.wf.ew.common.utils.StringUtil;
-import com.wf.ew.system.model.UserHealth;
+import com.wf.ew.common.vo.DiseaseNameVO;
 import com.wf.ew.system.model.UserHealthItem;
 import com.wf.ew.system.service.UserHealthItemService;
 import com.wf.ew.system.service.UserHealthService;
@@ -19,8 +20,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/system/user_health_item")
@@ -37,11 +38,27 @@ public class UserHealthItemController {
     @RequiresPermissions("health_item:view")
     @RequestMapping
     public String userHealthItem(Model model) {
+        List<DiseaseNameVO> diseaseNameList=new ArrayList<>();
+        for (DiseaseNameEnum value : DiseaseNameEnum.values()) {
+            DiseaseNameVO vo=new DiseaseNameVO();
+            vo.setCode(value.getCode());
+            vo.setName(value.getName());
+            diseaseNameList.add(vo);
+        }
+        model.addAttribute("diseaseNames", diseaseNameList);
         return "system/user_health_item.html";
     }
 
     @RequestMapping("/editForm")
-    public String addUserHealth(Model model) {
+    public String editForm(Model model) {
+        List<DiseaseNameVO> diseaseNameList=new ArrayList<>();
+        for (DiseaseNameEnum value : DiseaseNameEnum.values()) {
+            DiseaseNameVO vo=new DiseaseNameVO();
+            vo.setCode(value.getCode());
+            vo.setName(value.getName());
+            diseaseNameList.add(vo);
+        }
+        model.addAttribute("diseaseNames", diseaseNameList);
         return "system/user_health_item_form.html";
     }
 

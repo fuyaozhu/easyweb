@@ -5,8 +5,6 @@ import com.alibaba.fastjson.JSON;
 import com.wf.ew.common.JsonResult;
 import com.wf.ew.common.PageResult;
 import com.wf.ew.common.utils.StringUtil;
-import com.wf.ew.system.model.Role;
-import com.wf.ew.system.model.User;
 import com.wf.ew.system.model.UserHealth;
 import com.wf.ew.system.service.UserHealthService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -17,8 +15,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import java.util.List;
 
 @Controller
 @RequestMapping("/system/user_health")
@@ -33,13 +29,11 @@ public class UserHealthController {
     @RequiresPermissions("health:view")
     @RequestMapping
     public String userHealth(Model model) {
-        /*List<Role> roles = roleService.list(false);
-        model.addAttribute("roles", roles);*/
         return "system/user_health.html";
     }
 
     @RequestMapping("/editForm")
-    public String addUserHealth(Model model) {
+    public String editForm(Model model) {
         return "system/user_health_form.html";
     }
 
