@@ -41,5 +41,7 @@ public class UserHealth {
 
     private String image;  // 健康证图片
 
+    private String type;  // 类型
+
 
 }
