@@ -16,7 +16,7 @@
             <dl class="layui-nav-child">
                 <% for(subMenu in menu.subMenus) { %>
                 <dd>
-                    <a lay-href="${subMenu.menuUrl}">${subMenu.menuName}</a>
+                    <a lay-href="${subMenu.menuUrl}" id="${subMenu.menuName}">${subMenu.menuName}</a>
 
                     <% if(subMenu.subMenus.~size>0) { %>
                     <dl class="layui-nav-child">
@@ -59,3 +59,13 @@
         </li>-->
     </ul>
 </div>
+
+
+<script type="text/javascript">
+    console.log("11111111111111111111111111111")
+    var link3 = document.getElementById('疾病详情管理');
+    link3.onclick = function() {
+        alert('请去上一级点击属性跳转');
+        return false;
+    }
+</script>
