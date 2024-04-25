@@ -4,11 +4,13 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.wf.ew.common.PageResult;
+import com.wf.ew.common.constants.DiseaseNameEnum;
 import com.wf.ew.common.exception.BusinessException;
 import com.wf.ew.common.utils.StringUtil;
 import com.wf.ew.system.dao.UserHealthItemMapper;
 import com.wf.ew.system.model.UserHealthItem;
 import com.wf.ew.system.service.UserHealthItemService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,14 +44,21 @@ public class UserHealthItemServiceImpl implements UserHealthItemService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean add(UserHealthItem user) {
-        if (userHealthMapper.getByDiseaseNameAndUserHealthId(user.getDiseaseName(),user.getUserHealthId()) != null) {
-            throw new BusinessException("当前疾病名称此人员已经存在,请勿重复操作");
+    public boolean add(UserHealthItem user, List<String> disCodeeList) {
+        for (String disCode : disCodeeList) {
+            UserHealthItem item = userHealthMapper.getByDiseaseNameAndUserHealthId(disCode, user.getUserHealthId());
+            if (item!= null) {
+                throw new BusinessException("当前疾病名称("+ DiseaseNameEnum.getDiseaseName(item.getDiseaseName()) +")已经存在,请勿重复操作");
+            }
+
+            UserHealthItem userHealthItem = new UserHealthItem();
+            BeanUtils.copyProperties(user,userHealthItem);
+            userHealthItem.setDiseaseName(disCode);
+            user.setCreateTime(new Date());
+            user.setUpdateTime(new Date());
+            userHealthMapper.insert(userHealthItem);
         }
-        user.setCreateTime(new Date());
-        user.setUpdateTime(new Date());
-        boolean rs = userHealthMapper.insert(user) > 0;
-        return rs;
+        return true;
     }
 
     @Override

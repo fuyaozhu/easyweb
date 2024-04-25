@@ -1,11 +1,14 @@
 package com.wf.ew.system.model;
 
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.wf.ew.common.vo.DiseaseNameVO;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * 用户疾病明细表
@@ -24,6 +27,9 @@ public class UserHealthItem {
     private Long userHealthId; //关联id
 
     private String diseaseName;  // 疾病名称
+
+    @TableField(exist = false)
+    private List<DiseaseNameVO> diseaseNameVOList;  // 疾病名称
 
     private String chiefPhysician;//医师签章
 

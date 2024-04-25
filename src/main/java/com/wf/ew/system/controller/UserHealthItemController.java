@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -98,13 +99,18 @@ public class UserHealthItemController {
     @RequestMapping("/add")
     public JsonResult add(UserHealthItem user, HttpServletRequest request) {
         Long userHealthId= Long.valueOf(request.getParameter("userHealthId"));
-        user.setUserHealthId(userHealthId
-        );
-        if (userHealthItemService.add(user)) {
+        user.setUserHealthId(userHealthId);
+        List<String> disCodeeList = getDisCodeList(user.getDiseaseName());
+        if (userHealthItemService.add(user,disCodeeList)) {
             return JsonResult.ok("添加成功");
         } else {
             return JsonResult.error("添加失败");
         }
+    }
+
+    private  List<String> getDisCodeList(String roleStr) {
+        String[] split = roleStr.split(",");
+        return new ArrayList<>(Arrays.asList(split));
     }
 
     /**

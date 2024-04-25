@@ -4,7 +4,7 @@
     <div class="layui-form-item">
         <label class="layui-form-label">疾病名称</label>
         <div class="layui-input-block">
-            <select name="diseaseName" xm-select="diseaseName"  xm-select-radio lay-verify="required">
+            <select name="diseaseName" xm-select="diseaseName"  lay-verify="required">
                 <% for(dis in diseaseNames) { %>
                 <option value="${dis.code}">${dis.name}</option>
                 <% } %>

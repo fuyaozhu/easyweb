@@ -24,6 +24,16 @@ public enum DiseaseNameEnum {
         this.code = code;
     }
 
+    public static String getDiseaseName(String code){
+
+        for (DiseaseNameEnum value : DiseaseNameEnum.values()) {
+            if(value.getCode().equals(code)){
+                return value.getName();
+            }
+        }
+        return null;
+    }
+
     public String getName() {
         return name;
     }
